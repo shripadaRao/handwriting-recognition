@@ -6,7 +6,12 @@
     <title>Handwriting Image Predictor</title>
   </head>
   <body>
-    <button id="generateImgBtn" onclick="generateImage()">Generate Img</button>
+    <button id="generateRandomImgBtn" onclick="generateRandomImage()">
+      Generate Random Img
+    </button>
+    <button id="generateUserTextImgBtn" onclick="generateUserTextImage()">
+      Generate User Text Img
+    </button>
     <button id="predictImgBtn" style="display: none" onclick="predictImage()">
       Predict Img
     </button>
@@ -14,6 +19,7 @@
     <img id="generatedImage" style="max-width: 100%" alt="Generated Image" />
     <div id="generatedLabel"></div>
     <div id="predictionLabel"></div>
+    <div id="autocorrectedLabel"></div>
     <script src="app.js"></script>
   </body>
 </html>
