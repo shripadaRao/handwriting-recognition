@@ -24,11 +24,11 @@ def predict_image_route():
     try:
         data = request.get_json()
         base64_image = data["imageData"]
+        contextUsage = data["contextUsage"]
 
         predicted_word = predict_handwritten_text(base64_image)
         # apply autocorrect
-        autocorrected_word = autocorrect_model.autocorrect(predicted_word)
-        print("autocorrected: ", autocorrected_word)        
+        autocorrected_word = autocorrect_model.autocorrect(predicted_word, contextUsage)
         return jsonify({"predictedWord": predicted_word, "autocorrectedWord": autocorrected_word})
     
     except Exception as e:
