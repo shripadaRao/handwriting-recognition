@@ -4,6 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Handwriting Image Predictor</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+      }
+    </style>
   </head>
   <body>
     <button id="generateRandomImgBtn" onclick="generateRandomImage()">
@@ -12,14 +23,17 @@
     <button id="generateUserTextImgBtn" onclick="generateUserTextImage()">
       Generate User Text Img
     </button>
+
+    <br />
+    <img id="generatedImage" style="max-width: 100%" alt="" />
+    <br />
     <button id="predictImgBtn" style="display: none" onclick="predictImage()">
       Predict Img
     </button>
-    <br />
-    <img id="generatedImage" style="max-width: 100%" alt="Generated Image" />
     <div id="generatedLabel"></div>
     <div id="predictionLabel"></div>
     <div id="autocorrectedLabel"></div>
+    <div id="loadingIndicator" style="display: none">Loading...</div>
     <script src="app.js"></script>
   </body>
 </html>

@@ -6,9 +6,17 @@ const GENERATE_INPUT_WORD_IMAGE_API_URL =
 const PREDICT_IMAGE_API_URL = "http://127.0.0.1:5000/predict_image";
 
 let global_base64ImageData = "";
+let contextUsageOfWord = "";
+let isLoading = false;
 
 async function generateRandomImage() {
   const generateImageApiUrl = GENERATE_RANDOM_IMAGE_API_URL;
+
+  const displayPredictionLabel = document.getElementById("predictionLabel");
+  displayPredictionLabel.textContent = "";
+  const displayAutoCorrectedLabel =
+    document.getElementById("autocorrectedLabel");
+  displayAutoCorrectedLabel.textContent = "";
 
   try {
     const response = await fetch(generateImageApiUrl);
@@ -25,7 +33,7 @@ async function generateRandomImage() {
     generatedImage.src = "data:image/png;base64," + data.image;
 
     const displayLabel = document.getElementById("generatedLabel");
-    displayLabel.textContent = "Generated Label: " + label;
+    displayLabel.textContent = "True Label: " + label;
 
     // Show the 'Predict Img' button
     const predictImgBtn = document.getElementById("predictImgBtn");
@@ -39,6 +47,14 @@ async function generateUserTextImage() {
   const generateImageApiUrl = GENERATE_INPUT_WORD_IMAGE_API_URL;
 
   const userText = prompt("Enter text for image generation:");
+  contextUsageOfWord = prompt("Enter context where this word is used:");
+
+  const displayPredictionLabel = document.getElementById("predictionLabel");
+  displayPredictionLabel.textContent = "";
+  const displayAutoCorrectedLabel =
+    document.getElementById("autocorrectedLabel");
+  displayAutoCorrectedLabel.textContent = "";
+
   if (userText) {
     try {
       const response = await fetch(generateImageApiUrl + userText);
@@ -69,6 +85,12 @@ async function generateUserTextImage() {
 async function predictImage() {
   const predictImageApiUrl = PREDICT_IMAGE_API_URL;
 
+  const loadingIndicator = document.getElementById("loadingIndicator");
+  loadingIndicator.style.display = "block";
+  isLoading = true;
+  predictImgBtn.disabled = true; // Disable the button
+  predictImgBtn.style.backgroundColor = "#ccc";
+
   try {
     // Make POST request to the predict image API with base64 image data
     const response = await fetch(predictImageApiUrl, {
@@ -76,8 +98,15 @@ async function predictImage() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ imageData: global_base64ImageData }),
+      body: JSON.stringify({
+        imageData: global_base64ImageData,
+        contextUsage: contextUsageOfWord,
+      }),
     });
+
+    loadingIndicator.style.display = "none";
+    predictImgBtn.disabled = false; // Enable the button
+    predictImgBtn.style.backgroundColor = "#4caf50";
 
     const data = await response.json();
     const { predictedWord, autocorrectedWord } = data;
@@ -94,5 +123,21 @@ async function predictImage() {
       "Autocorrected Label: " + autocorrectedWord;
   } catch (error) {
     console.error("Error predicting image:", error);
+    loadingIndicator.style.display = "none";
+    isLoading = false;
+  } finally {
+    isLoading = false;
+    updatePredictButton();
+    contextUsageOfWord = "";
+  }
+}
+function updatePredictButton() {
+  const predictImgBtn = document.getElementById("predictImgBtn");
+  if (isLoading) {
+    predictImgBtn.disabled = true; // Disable the button
+    predictImgBtn.style.backgroundColor = "#ccc"; // Grey out the button
+  } else {
+    predictImgBtn.disabled = false; // Enable the button
+    predictImgBtn.style.backgroundColor = "#4caf50"; // Restore the original color
   }
 }
