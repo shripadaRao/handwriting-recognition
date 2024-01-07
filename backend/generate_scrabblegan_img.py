@@ -19,8 +19,12 @@ generator = ImgGenerator(checkpt_path=f'ScrabbleGAN/IAM_best_checkpoint.tar',
                          config=config, char_map=char_map)
 
 
-def generate_image():
-    generated_imgs, _, word_labels = generator.generate(random_num_imgs=1)
+def generate_image(input_word=None):
+    if input_word is None:
+        generated_imgs, _, word_labels = generator.generate(random_num_imgs=1)
+    else:
+        generated_imgs, _, word_labels = generator.generate(word_list=[input_word])
+
     image_data = image_to_base64(generated_imgs[0])
     result = {"label": word_labels[0], "image": image_data}
     print(result)
