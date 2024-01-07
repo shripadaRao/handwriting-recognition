@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Handwriting Image Predictor</title>
+  </head>
+  <body>
+    <button id="generateImgBtn" onclick="generateImage()">Generate Img</button>
+    <button id="predictImgBtn" style="display: none" onclick="predictImage()">
+      Predict Img
+    </button>
+    <br />
+    <img id="generatedImage" style="max-width: 100%" alt="Generated Image" />
+    <div id="generatedLabel"></div>
+    <div id="predictionLabel"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
