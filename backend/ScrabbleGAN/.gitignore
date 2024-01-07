@@ -21,11 +21,11 @@ __pycache__/
 # data files
 *.csv
 *.csv.gz
-*.pickle
-*.pkl
+# *.pickle
+# *.pkl
 *.png
 *.lst
-*.txt
+# *.txt
 *.log
 *.tiff
 *.tsv
